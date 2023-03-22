@@ -9,11 +9,11 @@
 因此須先將數據轉換成二進制的數據流，這樣的過程稱為serialization(序列化)，序列化的協議主要有：XML, JSON以及protobuf，經protobuf序列化後的數據體積相較其他兩
 個協議小很多，從二進制解析回原本數據的速度也較快，具輕量、解析快的特性，本專案也選擇以此協議進行序列化，prtobuf有自己的語法，可經由protoc編譯器將其編譯成c++的形式
 
-＃框架與服務流程
+# 框架與服務流程
 
 ![CamScanner 03-22-2023 11 38_1](https://user-images.githubusercontent.com/128550044/226798707-00e89de1-070c-4f91-9328-51e61fb17367.jpg)
 
-＃ zookeeper
+# zookeeper
 由於發起呼叫rpc服務需得知具體的服務在哪台主機上，因此需要一個分布式服務配置中心，提供rpc服務的主機(節點)需向配置中心註冊服務，將其ip、port及服務名稱都註冊上去，而
 zookeeper就是扮演這當中註冊與配置中心的角色，像上面的架構圖中UserService提供Login和Register兩個函數(服務)，因此服務的提供者(RpcProvider)需將其ip、port以及
 兩個函數名稱註冊到zookeeper的server上，當client要呼叫rpc服務時，就去zookeeper server上查詢服務對應的ip和port
