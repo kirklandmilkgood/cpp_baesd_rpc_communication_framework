@@ -12,3 +12,12 @@
 ＃框架與服務流程
 
 ![CamScanner 03-22-2023 11 38_1](https://user-images.githubusercontent.com/128550044/226798707-00e89de1-070c-4f91-9328-51e61fb17367.jpg)
+
+＃ zookeeper
+由於發起呼叫rpc服務需得知具體的服務在哪台主機上，因此需要一個分布式服務配置中心，提供rpc服務的主機(節點)需向配置中心註冊服務，將其ip、port及服務名稱都註冊上去，而
+zookeeper就是扮演這當中註冊與配置中心的角色，像上面的架構圖中UserService提供Login和Register兩個函數(服務)，因此服務的提供者(RpcProvider)需將其ip、port以及
+兩個函數名稱註冊到zookeeper的server上，當client要呼叫rpc服務時，就去zookeeper server上查詢服務對應的ip和port
+
+# 紀錄檔系統
+為了掌握程式運作狀況以及除錯較為容易，本專案也建立了紀錄檔系統，在此單獨建立了一個thread負責將訊息寫入紀錄檔，而要寫入的訊息會被放入一個queue中，由這個thread取出，
+當queue中沒有訊息時，thread進行wait(blocking)狀態，再利用condition_variable在queue中有訊息被放入時，喚醒thread
